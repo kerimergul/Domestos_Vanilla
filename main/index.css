@@ -1,0 +1,69 @@
+.bg_body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: bottom;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 2;
+}
+
+.camera {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.countdowm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 50vw;
+    opacity: 0.3;
+    color: white;
+    z-index: 3;
+}
+
+.photo {
+    position: absolute;
+    top: 34.95%;
+    left: 39.85%;
+    border-radius: 4%;
+    text-align: center;
+    z-index: 3;
+    width: 44.25vw;
+    height: 41.3vh;
+    transform: rotate(-7.2deg);
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.canvas {
+    transform: translateX(-20%);
+    padding: 0;
+    margin: 0;
+    display: block;
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    transform-origin: center;
+}

@@ -1,0 +1,87 @@
+.bg_body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: bottom;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 2;
+}
+
+.imageContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    z-index: 1;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(0, 1fr));
+    grid-gap: 0;
+    max-width: 100vw;
+    max-height: 90vh;
+    z-index: 1;
+    direction: rtl;
+}
+
+.image {
+    padding: 0;
+    margin: 0;
+    /* padding-left: 7.7vw; */
+    display: block;
+    object-fit: contain;
+    transform-origin: center;
+    max-width: 177%;
+}
+
+.grid-cell {
+    text-align: center;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    width: auto;
+    height: auto;
+}
+
+.img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.counter {
+    position: absolute;
+    top: 14%;
+    left: 5%;
+    width: 15vw;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: white;
+    font-weight: bold;
+    font-size: 86px;
+    z-index: 5;
+}

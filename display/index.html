@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Page</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <style>
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            /* object-fit: cover; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="imageContainer" class="imageContainer">
+        <div id="gallery" class="gallery">
+        </div>
+
+    </div>
+    <img id="display_photo" src="assets/display.png" alt="First Image" class="bg_body">
+    <div id="counter" class="counter">0</div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const images = [];
+        let count = 0;
+        async function getImage() {
+            console.log(['count', count])
+            const postData = { count: count };
+
+            fetch('https://www.tesvik-sgk.com/domestos/api/image/getImage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            })
+                .then(response => response.json())
+                .then(data => handleResponse(data))
+                .catch(error => {
+                    console.error('Error:', error);
+                    // alert('Sorgu başarısız!');
+                });
+            return;
+        }
+
+        function updateGallery() {
+            gallery.innerHTML = '';
+
+            const numImages = images.length;
+            var numCols = Math.ceil(Math.sqrt(numImages)) + 1;
+            console.log(['numImages', numImages])
+            console.log(['numCols', numCols])
+            var numRows = Math.ceil(numImages / numCols);
+            if (numImages < 5) {
+                numCols = numImages;
+                numRows = 1;
+            }
+            console.log(['numRows', numRows])
+            images.forEach((imageUrl, index) => {
+                const img = new Image();
+                img.src = imageUrl;
+                img.className = 'image';
+                const gridCell = document.createElement('div');
+                gridCell.className = 'grid-cell';
+                img.onload = () => {
+                    const col = index % numCols;
+                    const row = Math.floor(index / numCols);
+
+                    gallery.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+                    gallery.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
+
+
+                    const widthPercentage = numImages < 5 ? 100 : 100 / numCols;
+                    const heightPercentage = numImages < 5 ? 100 : 100 / numRows;
+
+                    // gridCell.style.width = `auto`;
+                    // gridCell.style.height = `auto`;
+
+                    // img.style.width = `100%`;
+                    // img.style.height = `100%`;
+
+                    gridCell.appendChild(img);
+                    gallery.appendChild(gridCell);
+                };
+            });
+        }
+
+        function handleResponse(data) {
+            const counter_div = document.getElementById('counter');
+            const { status, hasNext, img } = data;
+
+            if (status) {
+                if (hasNext) {
+                    const base64 = img?.data;
+                    count++;
+                    images.push(base64);
+                    counter_div.textContent = count;
+                    updateGallery();
+                } else {
+                    console.log('No more images.');
+                }
+            } else {
+                // alert('Sorgu hatalı!');
+            }
+        }
+
+        const getImageInterval = setInterval(getImage, 10000);
+        updateGallery();
+    </script>
+</body>
+
+</html>
