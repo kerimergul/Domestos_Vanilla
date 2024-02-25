@@ -32,6 +32,7 @@
 
     <script>
         let detected = false;
+        let lastQrStatus = false;
 
         let changeScreenInterval;
 
@@ -68,8 +69,11 @@
                 .then(data => {
                     console.log(['checkQrTrigger', data]);
                     let triggerStatus = data?.status;
-                    if (triggerStatus) {
-                        switchImages();
+                    if (lastQrStatus !== triggerStatus) {
+                        lastQrStatus = triggerStatus;
+                        if (triggerStatus) {
+                            switchImages();
+                        }
                     }
                 })
                 .catch(error => console.error('Error:', error));
@@ -98,9 +102,7 @@
 
             const waitTimeout = setTimeout(() => {
                 setAllDefault(dataUrl);
-            }, 4000);
-
-
+            }, 10000);
             return;
         }
 
@@ -129,15 +131,13 @@
             // fetch('https://www.tesvik-sgk.com/domestos/api/qr/reset').then(res => console.log(['reset Trigger', res]))
             //     .catch(error => console.error('Error:', error));
 
-            changeScreenInterval = setInterval(checkQrTrigger, 5000);
+            changeScreenInterval = setInterval(checkQrTrigger, 7000);
             sendImageToServer(dataUrl);
             return;
         }
 
         async function sendImageToServer(dataUrl) {
             const postData = { img: dataUrl };
-
-
             fetch('https://www.tesvik-sgk.com/domestos/api/image/upload', {
                 method: 'POST',
                 headers: {
@@ -153,26 +153,16 @@
 
         function takeSnapshot(canvas, video) {
             const context = canvas.getContext('2d');
-            // Canvas boyutlarını video boyutlarına uygun olarak ayarla
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-
-            // Canvas'a video görüntüsünü çiz
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Canvas'tan veriyi al ve bir veri URL'sine dönüştür
             const dataURL = canvas.toDataURL('image/png');
-
-            // Veriyi kullanabilir veya bir başka yere gönderebilirsiniz
             return dataURL;
         }
-
         changeScreenInterval = setInterval(checkQrTrigger, 5000);
-
         const gestureStrings = {
             'domestos_gesture': ''
         }
-
         async function createDetector() {
             return window.handPoseDetection.createDetector(
                 window.handPoseDetection.SupportedModels.MediaPipeHands,
